@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useMutation } from "@tantml:react-query";
+import { useMutation } from "@tanstack/react-query";
 import { getApiUrl } from "../utils/api";
 
  const useFollow = () => {
