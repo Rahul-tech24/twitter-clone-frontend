@@ -6,6 +6,7 @@ import { BiRepost } from "react-icons/bi";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 import { formatPostDate } from "../../utils/date";
 import toast from "react-hot-toast";
+import { getApiUrl } from "../../utils/api";
 
 const PostDetailPage = () => {
 	const { id } = useParams();
@@ -16,7 +17,7 @@ const PostDetailPage = () => {
 	const { data: authUser } = useQuery({
 		queryKey: ["authUser"],
 		queryFn: async () => {
-			const res = await fetch("/api/auth/user", { credentials: "include" });
+			const res = await fetch(getApiUrl("/api/auth/user"), { credentials: "include" });
 			const data = await res.json();
 			if (!res.ok) throw new Error(data.error || "Something went wrong");
 			return data;
@@ -27,7 +28,7 @@ const PostDetailPage = () => {
 	const { data: post, isLoading } = useQuery({
 		queryKey: ["post", id],
 		queryFn: async () => {
-			const res = await fetch(`/api/posts/post/${id}`, {
+			const res = await fetch(getApiUrl(`/api/posts/post/${id}`), {
 				credentials: "include",
 			});
 			const data = await res.json();
@@ -38,7 +39,7 @@ const PostDetailPage = () => {
 
 	const { mutate: deletePost, isPending: isDeleting } = useMutation({
 		mutationFn: async () => {
-			const res = await fetch(`/api/posts/delete/${id}`, {
+			const res = await fetch(getApiUrl(`/api/posts/delete/${id}`), {
 				method: "DELETE",
 				credentials: "include",
 			});
@@ -58,7 +59,7 @@ const PostDetailPage = () => {
 
 	const { mutate: likePost, isPending: isLiking } = useMutation({
 		mutationFn: async () => {
-			const res = await fetch(`/api/posts/like/${id}`, {
+			const res = await fetch(getApiUrl(`/api/posts/like/${id}`), {
 				method: "POST",
 				credentials: "include",
 			});
@@ -79,7 +80,7 @@ const PostDetailPage = () => {
 
 	const { mutate: commentPost, isPending: isCommenting } = useMutation({
 		mutationFn: async () => {
-			const res = await fetch(`/api/posts/comment/${id}`, {
+			const res = await fetch(getApiUrl(`/api/posts/comment/${id}`), {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

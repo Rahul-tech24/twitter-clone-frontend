@@ -11,6 +11,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatPostDate } from "../../utils/date";
+import { getApiUrl } from "../../utils/api";
 
 const Post = ({ post }) => {
 	const [comment, setComment] = useState("");
@@ -20,7 +21,7 @@ const Post = ({ post }) => {
 		queryKey: ["authUser"],
 		queryFn: async () => {
 			try {
-				const response = await fetch('/api/auth/user', { credentials: 'include' });
+				const response = await fetch(getApiUrl('/api/auth/user'), { credentials: 'include' });
 				const data = await response.json();
 				if (!response.ok) return null;
 				if (data.error) return null;
@@ -36,7 +37,7 @@ const Post = ({ post }) => {
 
 	const { mutate: deletePost, isPending } = useMutation({
 		mutationFn: async () => {
-			const res = await fetch(`/api/posts/delete/${post._id}`, {
+			const res = await fetch(getApiUrl(`/api/posts/delete/${post._id}`), {
 				method: "DELETE",
 			});
 			const data = await res.json();
@@ -55,7 +56,7 @@ const Post = ({ post }) => {
 
 	const { mutate: likePost, isPending: isLiking } = useMutation({
 		mutationFn: async () => {
-			const res = await fetch(`/api/posts/like/${post._id}`, {
+			const res = await fetch(getApiUrl(`/api/posts/like/${post._id}`), {
 				method: "POST",
 			});
 			const data = await res.json();
@@ -81,7 +82,7 @@ const Post = ({ post }) => {
 
 	const {mutate: commentPost, isPending: isCommenting} = useMutation({
 		mutationFn: async () => {
-			const res = await fetch(`/api/posts/comment/${post._id}`, {
+			const res = await fetch(getApiUrl(`/api/posts/comment/${post._id}`), {
 				method: "POST",
 				body: JSON.stringify({ text: comment }),
 				headers: {
